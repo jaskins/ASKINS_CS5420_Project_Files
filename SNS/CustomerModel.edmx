@@ -1,0 +1,296 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CustomerNewModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FName" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="MName" Type="char" MaxLength="10" />
+          <Property Name="LName" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="CustomerEmail" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CustomerAddress">
+          <Key>
+            <PropertyRef Name="AddressID" />
+          </Key>
+          <Property Name="AddressID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="City" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="State" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Zip" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CustomerInfo">
+          <Key>
+            <PropertyRef Name="CustomerInfoID" />
+          </Key>
+          <Property Name="CustomerInfoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerID" Type="int" Nullable="false" />
+          <Property Name="CustomerAddressID" Type="int" Nullable="false" />
+          <Property Name="CustomerPhoneNumberID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CustomerPhoneNumber">
+          <Key>
+            <PropertyRef Name="PhoneNumberID" />
+          </Key>
+          <Property Name="PhoneNumberID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PhoneNumberExt" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="PhoneNumberSeven" Type="varchar" MaxLength="9" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CustomerInfo_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="CustomerInfo" Type="Self.CustomerInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="CustomerInfo">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerInfo_CustomerAddress">
+          <End Role="CustomerAddress" Type="Self.CustomerAddress" Multiplicity="1" />
+          <End Role="CustomerInfo" Type="Self.CustomerInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerAddress">
+              <PropertyRef Name="AddressID" />
+            </Principal>
+            <Dependent Role="CustomerInfo">
+              <PropertyRef Name="CustomerAddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerInfo_CustomerPhoneNumber">
+          <End Role="CustomerPhoneNumber" Type="Self.CustomerPhoneNumber" Multiplicity="1" />
+          <End Role="CustomerInfo" Type="Self.CustomerInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerPhoneNumber">
+              <PropertyRef Name="PhoneNumberID" />
+            </Principal>
+            <Dependent Role="CustomerInfo">
+              <PropertyRef Name="CustomerPhoneNumberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="InsertCustomerIntoCustomerInfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FName" Type="char" Mode="In" />
+          <Parameter Name="MName" Type="char" Mode="In" />
+          <Parameter Name="LName" Type="char" Mode="In" />
+          <Parameter Name="CustomerEmail" Type="varchar" Mode="In" />
+          <Parameter Name="Address" Type="varchar" Mode="In" />
+          <Parameter Name="City" Type="varchar" Mode="In" />
+          <Parameter Name="State" Type="varchar" Mode="In" />
+          <Parameter Name="Zip" Type="int" Mode="In" />
+          <Parameter Name="PhoneNumberExt" Type="varchar" Mode="In" />
+          <Parameter Name="PhoneNumberSeven" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="CustomerNewModelStoreContainer">
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CustomerAddress" EntityType="Self.CustomerAddress" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CustomerInfo" EntityType="Self.CustomerInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CustomerPhoneNumber" EntityType="Self.CustomerPhoneNumber" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CustomerInfo_Customer" Association="Self.FK_CustomerInfo_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="CustomerInfo" EntitySet="CustomerInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerInfo_CustomerAddress" Association="Self.FK_CustomerInfo_CustomerAddress">
+            <End Role="CustomerAddress" EntitySet="CustomerAddress" />
+            <End Role="CustomerInfo" EntitySet="CustomerInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerInfo_CustomerPhoneNumber" Association="Self.FK_CustomerInfo_CustomerPhoneNumber">
+            <End Role="CustomerPhoneNumber" EntitySet="CustomerPhoneNumber" />
+            <End Role="CustomerInfo" EntitySet="CustomerInfo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CustomerNewModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FName" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="MName" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="LName" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="CustomerEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CustomerInfoes" Relationship="Self.FK_CustomerInfo_Customer" FromRole="Customer" ToRole="CustomerInfo" />
+        </EntityType>
+        <EntityType Name="CustomerAddress">
+          <Key>
+            <PropertyRef Name="AddressID" />
+          </Key>
+          <Property Name="AddressID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Zip" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CustomerInfoes" Relationship="Self.FK_CustomerInfo_CustomerAddress" FromRole="CustomerAddress" ToRole="CustomerInfo" />
+        </EntityType>
+        <EntityType Name="CustomerInfo">
+          <Key>
+            <PropertyRef Name="CustomerInfoID" />
+          </Key>
+          <Property Name="CustomerInfoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerID" Type="Int32" Nullable="false" />
+          <Property Name="CustomerAddressID" Type="Int32" Nullable="false" />
+          <Property Name="CustomerPhoneNumberID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_CustomerInfo_Customer" FromRole="CustomerInfo" ToRole="Customer" />
+          <NavigationProperty Name="CustomerAddress" Relationship="Self.FK_CustomerInfo_CustomerAddress" FromRole="CustomerInfo" ToRole="CustomerAddress" />
+          <NavigationProperty Name="CustomerPhoneNumber" Relationship="Self.FK_CustomerInfo_CustomerPhoneNumber" FromRole="CustomerInfo" ToRole="CustomerPhoneNumber" />
+        </EntityType>
+        <EntityType Name="CustomerPhoneNumber">
+          <Key>
+            <PropertyRef Name="PhoneNumberID" />
+          </Key>
+          <Property Name="PhoneNumberID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PhoneNumberExt" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PhoneNumberSeven" Type="String" MaxLength="9" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="CustomerInfoes" Relationship="Self.FK_CustomerInfo_CustomerPhoneNumber" FromRole="CustomerPhoneNumber" ToRole="CustomerInfo" />
+        </EntityType>
+        <Association Name="FK_CustomerInfo_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="CustomerInfo" Type="Self.CustomerInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="CustomerInfo">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerInfo_CustomerAddress">
+          <End Role="CustomerAddress" Type="Self.CustomerAddress" Multiplicity="1" />
+          <End Role="CustomerInfo" Type="Self.CustomerInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerAddress">
+              <PropertyRef Name="AddressID" />
+            </Principal>
+            <Dependent Role="CustomerInfo">
+              <PropertyRef Name="CustomerAddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerInfo_CustomerPhoneNumber">
+          <End Role="CustomerPhoneNumber" Type="Self.CustomerPhoneNumber" Multiplicity="1" />
+          <End Role="CustomerInfo" Type="Self.CustomerInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerPhoneNumber">
+              <PropertyRef Name="PhoneNumberID" />
+            </Principal>
+            <Dependent Role="CustomerInfo">
+              <PropertyRef Name="CustomerPhoneNumberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CustomerTBLEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="CustomerAddresses" EntityType="Self.CustomerAddress" />
+          <EntitySet Name="CustomerInfoes" EntityType="Self.CustomerInfo" />
+          <EntitySet Name="CustomerPhoneNumbers" EntityType="Self.CustomerPhoneNumber" />
+          <AssociationSet Name="FK_CustomerInfo_Customer" Association="Self.FK_CustomerInfo_Customer">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="CustomerInfo" EntitySet="CustomerInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerInfo_CustomerAddress" Association="Self.FK_CustomerInfo_CustomerAddress">
+            <End Role="CustomerAddress" EntitySet="CustomerAddresses" />
+            <End Role="CustomerInfo" EntitySet="CustomerInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerInfo_CustomerPhoneNumber" Association="Self.FK_CustomerInfo_CustomerPhoneNumber">
+            <End Role="CustomerPhoneNumber" EntitySet="CustomerPhoneNumbers" />
+            <End Role="CustomerInfo" EntitySet="CustomerInfoes" />
+          </AssociationSet>
+          <FunctionImport Name="InsertCustomerIntoCustomerInfo">
+            <Parameter Name="FName" Mode="In" Type="String" />
+            <Parameter Name="MName" Mode="In" Type="String" />
+            <Parameter Name="LName" Mode="In" Type="String" />
+            <Parameter Name="CustomerEmail" Mode="In" Type="String" />
+            <Parameter Name="Address" Mode="In" Type="String" />
+            <Parameter Name="City" Mode="In" Type="String" />
+            <Parameter Name="State" Mode="In" Type="String" />
+            <Parameter Name="Zip" Mode="In" Type="Int32" />
+            <Parameter Name="PhoneNumberExt" Mode="In" Type="String" />
+            <Parameter Name="PhoneNumberSeven" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CustomerNewModelStoreContainer" CdmEntityContainer="CustomerTBLEntities">
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="CustomerNewModel.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="FName" ColumnName="FName" />
+                <ScalarProperty Name="MName" ColumnName="MName" />
+                <ScalarProperty Name="LName" ColumnName="LName" />
+                <ScalarProperty Name="CustomerEmail" ColumnName="CustomerEmail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerAddresses">
+            <EntityTypeMapping TypeName="CustomerNewModel.CustomerAddress">
+              <MappingFragment StoreEntitySet="CustomerAddress">
+                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerInfoes">
+            <EntityTypeMapping TypeName="CustomerNewModel.CustomerInfo">
+              <MappingFragment StoreEntitySet="CustomerInfo">
+                <ScalarProperty Name="CustomerInfoID" ColumnName="CustomerInfoID" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="CustomerAddressID" ColumnName="CustomerAddressID" />
+                <ScalarProperty Name="CustomerPhoneNumberID" ColumnName="CustomerPhoneNumberID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerPhoneNumbers">
+            <EntityTypeMapping TypeName="CustomerNewModel.CustomerPhoneNumber">
+              <MappingFragment StoreEntitySet="CustomerPhoneNumber">
+                <ScalarProperty Name="PhoneNumberID" ColumnName="PhoneNumberID" />
+                <ScalarProperty Name="PhoneNumberExt" ColumnName="PhoneNumberExt" />
+                <ScalarProperty Name="PhoneNumberSeven" ColumnName="PhoneNumberSeven" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="InsertCustomerIntoCustomerInfo" FunctionName="CustomerNewModel.Store.InsertCustomerIntoCustomerInfo" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
